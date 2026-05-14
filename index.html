@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sophisticave — KNX Smart Home Brief</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+:root{
+  --navy:#0D1B2E;--navy-mid:#142236;--navy-light:#1C3050;
+  --gold:#C8A55A;--gold-dim:rgba(200,165,90,0.12);--gold-rule:rgba(200,165,90,0.28);
+  --cream:#F4EEE2;--cream-soft:#D8CDB4;--ink:#9A9080;--white:#fff;
+  --border:rgba(255,255,255,0.07);--field-bg:rgba(255,255,255,0.04);
+  --field-border:rgba(200,165,90,0.32);
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--cream);font-family:var(--sans);font-size:14px;line-height:1.55}
+
+/* ── COVER ── */
+.cover{background:linear-gradient(150deg,var(--navy-light),var(--navy) 65%);
+  border-bottom:1px solid var(--gold-rule);padding:56px 48px 44px;position:relative;overflow:hidden}
+.cover::before,.cover::after{content:'';position:absolute;border:1px solid var(--gold-rule);border-radius:50%}
+.cover::before{width:500px;height:500px;top:-140px;right:-140px;opacity:.15}
+.cover::after{width:340px;height:340px;top:-80px;right:-80px;opacity:.2}
+.brand{display:flex;align-items:center;gap:9px;margin-bottom:36px;z-index:1;position:relative}
+.bmark{width:26px;height:26px;border:1.5px solid var(--gold);border-radius:4px;position:relative}
+.bmark::before{content:'';position:absolute;top:5px;left:5px;width:14px;height:14px;
+  border:1.5px solid var(--gold);border-radius:50%;border-top-color:transparent;border-left-color:transparent;transform:rotate(-45deg)}
+.bmark::after{content:'';position:absolute;bottom:4px;left:50%;width:4px;height:4px;
+  background:var(--gold);border-radius:50%;transform:translateX(-50%)}
+.bname{font:500 14px/1 var(--sans);letter-spacing:.05em;color:var(--cream)}
+.bname em{color:var(--gold);font-style:normal}
+.eyebrow{font-size:9.5px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;z-index:1;position:relative}
+.cover h1{font-family:var(--serif);font-size:clamp(30px,5vw,50px);font-weight:300;
+  color:var(--white);line-height:1.06;margin-bottom:18px;z-index:1;position:relative}
+.cover h1 em{font-style:italic;color:var(--gold)}
+.cover-sub{font-size:13.5px;color:var(--ink);line-height:1.65;max-width:520px;margin-bottom:28px;z-index:1;position:relative}
+.note-box{display:inline-flex;align-items:center;gap:10px;background:var(--gold-dim);
+  border:1px solid var(--gold-rule);padding:9px 15px;font-size:12px;color:var(--cream-soft);z-index:1;position:relative}
+.note-box strong{color:var(--gold);font-weight:500}
+
+/* ── LAYOUT ── */
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+
+/* ── SECTION ── */
+.sec{margin-top:52px}
+.sec-hdr{display:flex;align-items:center;gap:14px;margin-bottom:24px;
+  padding-bottom:14px;border-bottom:1px solid var(--gold-rule)}
+.sec-n{font-family:var(--serif);font-style:italic;font-size:26px;
+  color:var(--gold);line-height:1;flex-shrink:0;width:30px;text-align:center}
+.sec-t{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--white)}
+.sec-t small{display:block;font-family:var(--sans);font-size:10.5px;font-weight:400;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink);margin-top:2px}
+
+/* ── FIELDS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:580px){.g2,.g3{grid-template-columns:1fr}.cover{padding:36px 22px 32px}}
+.f{display:flex;flex-direction:column;gap:5px}
+.f label{font-size:9.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.hint{font-size:10.5px;color:var(--ink);margin-top:-2px;margin-bottom:1px}
+input[type=text],input[type=email],input[type=tel],input[type=number],select,textarea{
+  background:var(--field-bg);border:1px solid var(--field-border);color:var(--cream);
+  font-family:var(--sans);font-size:13px;padding:9px 13px;outline:none;width:100%;
+  border-radius:0;transition:border-color .2s,-webkit-appearance .2s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:rgba(200,165,90,.05)}
+input::placeholder,textarea::placeholder{color:rgba(184,175,160,.38);font-style:italic}
+select option{background:var(--navy-mid);color:var(--cream)}
+textarea{resize:vertical;min-height:70px}
+hr.div{border:none;border-top:1px solid var(--border);margin:18px 0}
+
+/* ── CHECKBOXES / RADIOS ── */
+.chk-grp,.rad-grp{display:flex;flex-wrap:wrap;gap:7px;margin-top:3px}
+.chk-grp label,.rad-grp label{
+  display:flex;align-items:center;gap:7px;cursor:pointer;
+  font-size:12.5px;color:var(--cream-soft);background:var(--field-bg);
+  border:1px solid var(--field-border);padding:6px 11px;
+  transition:background .14s,border-color .14s;user-select:none}
+.chk-grp label:hover,.rad-grp label:hover{border-color:var(--gold);background:var(--gold-dim)}
+.chk-grp input,.rad-grp input{width:13px;height:13px;min-width:13px;accent-color:var(--gold);cursor:pointer;padding:0}
+.lbl{font-size:9.5px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+
+/* ── ROOM TABLE ── */
+.rtbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.rtbl th{background:var(--navy-light);color:var(--gold);font-size:8.5px;font-weight:500;
+  letter-spacing:.15em;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:1px solid var(--gold-rule)}
+.rtbl td{padding:5px 6px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rtbl tr:last-child td{border-bottom:none}
+.rtbl input[type=text],.rtbl select{padding:5px 7px;font-size:11.5px}
+.rtbl input[type=checkbox]{width:13px;height:13px;accent-color:var(--gold);cursor:pointer}
+
+/* ── SUBMIT BAR ── */
+.sub-bar{margin-top:56px;padding:32px;background:var(--gold-dim);border:1px solid var(--gold-rule);text-align:center}
+.sub-bar h3{font-family:var(--serif);font-size:24px;font-weight:300;color:var(--white);margin-bottom:8px}
+.sub-bar p{font-size:13px;color:var(--ink);margin-bottom:22px;line-height:1.6}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-g{background:var(--gold);color:var(--navy);font:500 11.5px/1 var(--sans);
+  letter-spacing:.16em;text-transform:uppercase;padding:13px 34px;border:none;cursor:pointer;transition:opacity .18s}
+.btn-g:hover{opacity:.86}
+.btn-o{background:transparent;color:var(--gold);font:500 11.5px/1 var(--sans);
+  letter-spacing:.16em;text-transform:uppercase;padding:13px 22px;
+  border:1px solid var(--gold-rule);cursor:pointer;transition:background .18s}
+.btn-o:hover{background:var(--gold-dim)}
+
+/* ── ANSWERS OVERLAY ── */
+#ans-screen{display:none;position:fixed;inset:0;background:var(--navy);z-index:9000;overflow-y:auto}
+#ans-screen.show{display:block}
+.ans-inner{max-width:700px;margin:0 auto;padding:40px 24px 80px}
+.ans-top{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--gold-rule)}
+.ans-top h2{font-family:var(--serif);font-size:32px;font-weight:300;color:var(--white);margin-bottom:6px}
+.ans-top h2 em{font-style:italic;color:var(--gold)}
+.ans-top p{font-size:13px;color:var(--ink);line-height:1.6}
+.ans-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+#ans-box{width:100%;min-height:340px;background:rgba(255,255,255,.03);
+  border:1px solid var(--gold-rule);color:var(--cream);font-family:monospace;
+  font-size:12px;line-height:1.6;padding:16px;resize:vertical;outline:none}
+.ans-note{font-size:11.5px;color:var(--ink);margin-top:10px;line-height:1.5}
+.ans-note a{color:var(--gold)}
+
+/* ── TOAST ── */
+#toast{display:none;position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--navy);font-weight:500;font-size:13px;
+  padding:11px 26px;z-index:99999;white-space:nowrap;box-shadow:0 6px 28px rgba(0,0,0,.4)}
+#toast.on{display:block}
+
+/* ── FOOTER ── */
+.foot{border-top:1px solid var(--border);padding:20px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--ink);flex-wrap:wrap;gap:10px}
+.foot a{color:var(--gold);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div id="toast">✓ Copied to clipboard</div>
+
+<!-- ANSWERS SCREEN -->
+<div id="ans-screen">
+  <div class="ans-inner">
+    <div class="ans-top">
+      <h2>Your brief is <em>ready to send.</em></h2>
+      <p>Your answers are formatted below. Copy them and send to Walid via WhatsApp or email — whichever is easier.</p>
+    </div>
+    <div class="ans-actions">
+      <button class="btn-g" onclick="copyAns()">Copy to clipboard</button>
+      <button class="btn-o" onclick="sendWhatsApp()">Open WhatsApp</button>
+      <button class="btn-o" onclick="sendEmail()">Open Email</button>
+      <button class="btn-o" onclick="goBack()">← Edit answers</button>
+    </div>
+    <textarea id="ans-box" readonly spellcheck="false"></textarea>
+    <p class="ans-note">
+      <strong style="color:var(--cream)">WhatsApp:</strong> Click "Open WhatsApp" — it will open a chat with Walid. Paste your copied answers into the message.<br>
+      <strong style="color:var(--cream)">Email:</strong> Click "Open Email" — it opens a draft. Paste your copied answers into the body.<br>
+      Contact directly: <a href="mailto:Sales@sophisticave.com">Sales@sophisticave.com</a> · <a href="tel:+971562867867">+971 56 286 7867</a>
+    </p>
+  </div>
+</div>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="brand">
+    <div class="bmark"></div>
+    <div class="bname">Sophisti<em>cave</em></div>
+  </div>
+  <div class="eyebrow">KNX Smart Home Design Brief</div>
+  <h1>Tell us about<br>your <em>home.</em></h1>
+  <p class="cover-sub">This form helps us design a KNX smart home system that fits your life, not just your floorplan. Leave anything you're unsure about blank — we'll cover it in our first meeting.</p>
+  <div class="note-box"><strong>⏱ 10–15 min</strong> &nbsp;·&nbsp; No wrong answers &nbsp;·&nbsp; More detail = more accurate proposal</div>
+</div>
+
+<!-- FORM -->
+<div class="wrap">
+<form id="qform" onsubmit="handleSubmit(event)" novalidate>
+
+<!-- 1. CONTACT -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">1</div><div class="sec-t">Contact Details<small>About You</small></div></div>
+  <div class="g2">
+    <div class="f"><label>Full Name *</label><input type="text" name="name" required placeholder="Your name"></div>
+    <div class="f"><label>WhatsApp / Phone</label><input type="tel" name="phone" placeholder="+971 …"></div>
+    <div class="f"><label>Email</label><input type="email" name="email" placeholder="your@email.com"></div>
+    <div class="f"><label>Property / Project Name</label><input type="text" name="project" placeholder="e.g. Villa 12, Emirates Hills"></div>
+  </div>
+</div>
+
+<!-- 2. PROJECT -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">2</div><div class="sec-t">The Project<small>Property & Timeline</small></div></div>
+  <div class="g2">
+    <div class="f"><label>Property Type</label>
+      <select name="prop_type"><option value="">Select…</option><option>Villa</option><option>Penthouse</option><option>Apartment</option><option>Compound / Multiple Units</option><option>Other</option></select></div>
+    <div class="f"><label>Project Stage</label>
+      <select name="stage"><option value="">Select…</option><option>New build — before MEP rough-in</option><option>New build — MEP already designed</option><option>Under fit-out / renovation</option><option>Occupied — retrofit</option></select></div>
+    <div class="f"><label>Total Built-Up Area</label><input type="text" name="bua" placeholder="e.g. 800 sqm / 8,600 sqft"></div>
+    <div class="f"><label>Number of Floors</label><input type="number" name="floors" placeholder="e.g. 3" min="1"></div>
+    <div class="f"><label>Target Completion</label><input type="text" name="completion" placeholder="e.g. Q3 2026 / 6 months"></div>
+    <div class="f"><label>Architect / Main Contractor</label><input type="text" name="contractor" placeholder="Name if applicable"></div>
+  </div>
+  <hr class="div">
+  <div class="f"><label>Main rooms / areas</label>
+    <div class="hint">e.g. Master Bedroom, Bedroom 2, Living, Dining, Kitchen, Majlis, Cinema, Gym, Garden…</div>
+    <textarea name="room_list" rows="2" placeholder="List your rooms…"></textarea></div>
+</div>
+
+<!-- 3. LIFESTYLE -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">3</div><div class="sec-t">Lifestyle & Habits<small>How You Live</small></div></div>
+  <div class="g2">
+    <div class="f"><label>Who lives in the home?</label><input type="text" name="occupants" placeholder="e.g. Couple + 2 children + live-in staff"></div>
+    <div class="f"><label>Do you travel frequently?</label>
+      <select name="travel"><option value="">Select…</option><option>Rarely (home most of the time)</option><option>Occasionally (a few trips/year)</option><option>Frequently (away weeks at a time)</option></select></div>
+  </div>
+  <hr class="div">
+  <div class="lbl">Remote control when away?</div>
+  <div class="rad-grp">
+    <label><input type="radio" name="remote" value="Essential"> Essential — full control from anywhere</label>
+    <label><input type="radio" name="remote" value="Nice to have"> Nice to have</label>
+    <label><input type="radio" name="remote" value="Not important"> Not important</label>
+  </div>
+  <hr class="div">
+  <div class="lbl">Preferred control method (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="ctrl" value="Wall keypads"> Wall keypads</label>
+    <label><input type="checkbox" name="ctrl" value="Touch panel"> Touch panel</label>
+    <label><input type="checkbox" name="ctrl" value="Mobile app"> Mobile app</label>
+    <label><input type="checkbox" name="ctrl" value="Voice control"> Voice control</label>
+    <label><input type="checkbox" name="ctrl" value="Fully automated"> Fully automated</label>
+  </div>
+  <hr class="div">
+  <div class="lbl">Data privacy preference</div>
+  <div class="rad-grp">
+    <label><input type="radio" name="privacy" value="Cloud is fine"> Cloud-based is fine</label>
+    <label><input type="radio" name="privacy" value="Prefer local"> Prefer local / on-premise</label>
+    <label><input type="radio" name="privacy" value="Advise me"> Advise me</label>
+  </div>
+  <hr class="div">
+  <div class="f"><label>Special lifestyle notes</label>
+    <div class="hint">Prayer times, Ramadan mode, young children, home office, pets…</div>
+    <textarea name="lifestyle_notes" rows="2" placeholder="Optional"></textarea></div>
+</div>
+
+<!-- 4. LIGHTING -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">4</div><div class="sec-t">Lighting<small>Technical + Preference</small></div></div>
+  <div class="lbl">Lighting design status</div>
+  <div class="rad-grp">
+    <label><input type="radio" name="light_design" value="Complete — drawings available"> Complete — drawings available</label>
+    <label><input type="radio" name="light_design" value="In progress"> In progress</label>
+    <label><input type="radio" name="light_design" value="Not started — advise me"> Not started — Sophisticave to advise</label>
+  </div>
+  <hr class="div">
+  <div class="g2">
+    <div class="f"><label>Primary fixture type</label>
+      <select name="fixture"><option value="">Select…</option><option>LED standard</option><option>LED strips / indirect</option><option>Mix of LED and decorative</option><option>Not yet decided</option></select></div>
+    <div class="f"><label>Dimming required?</label>
+      <select name="dimming_req"><option value="">Select…</option><option>Yes — most rooms</option><option>Yes — selected rooms only</option><option>No — on/off only</option><option>Mix — advise me</option></select></div>
+  </div>
+  <hr class="div">
+  <div class="lbl">Dimming type (tick all that apply — fixtures determine compatibility)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="dim_type" value="Trailing edge (phase-cut) — standard LED"> Trailing edge / phase-cut — standard LED dimmers</label>
+    <label><input type="checkbox" name="dim_type" value="DALI — commercial-grade drivers"> DALI — commercial-grade LED drivers</label>
+    <label><input type="checkbox" name="dim_type" value="0–10V / 1–10V signal"> 0–10V / 1–10V signal</label>
+    <label><input type="checkbox" name="dim_type" value="PWM — LED strips / RGB"> PWM — LED strips / RGB</label>
+    <label><input type="checkbox" name="dim_type" value="Not sure — advise me"> Not sure — advise me</label>
+  </div>
+  <hr class="div">
+  <div class="lbl">Scenes needed (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="scenes" value="Morning"> Morning</label>
+    <label><input type="checkbox" name="scenes" value="Day / Working"> Day / Working</label>
+    <label><input type="checkbox" name="scenes" value="Dinner"> Dinner</label>
+    <label><input type="checkbox" name="scenes" value="Evening / Relax"> Evening / Relax</label>
+    <label><input type="checkbox" name="scenes" value="Cinema"> Cinema</label>
+    <label><input type="checkbox" name="scenes" value="Sleep / Night"> Sleep / Night</label>
+    <label><input type="checkbox" name="scenes" value="Away / Security"> Away / Security</label>
+    <label><input type="checkbox" name="scenes" value="Master All-Off"> Master All-Off</label>
+    <label><input type="checkbox" name="scenes" value="Circadian / Wellness"> Circadian / Wellness (auto-adjusts)</label>
+  </div>
+  <hr class="div">
+  <div class="lbl">Outdoor lighting scope</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="outdoor_light" value="Façade"> Façade</label>
+    <label><input type="checkbox" name="outdoor_light" value="Garden"> Garden</label>
+    <label><input type="checkbox" name="outdoor_light" value="Pool"> Pool</label>
+    <label><input type="checkbox" name="outdoor_light" value="Driveway"> Driveway</label>
+    <label><input type="checkbox" name="outdoor_light" value="None"> No outdoor</label>
+  </div>
+</div>
+
+<!-- 5. HVAC -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">5</div><div class="sec-t">HVAC & Climate<small>Technical</small></div></div>
+  <div class="g2">
+    <div class="f"><label>HVAC system status</label>
+      <select name="hvac_status"><option value="">Select…</option><option>New — not yet selected</option><option>New — already specified</option><option>Existing — integrating into KNX</option></select></div>
+    <div class="f"><label>HVAC system type</label>
+      <select name="hvac_type"><option value="">Select…</option><option>Central ducted (AHU)</option><option>Fan coil units (FCU)</option><option>Split / Multi-split</option><option>VRF / VRV system</option><option>Chilled water</option><option>Underfloor heating</option><option>Mix</option><option>Not sure</option></select></div>
+    <div class="f"><label>HVAC Brand</label><input type="text" name="hvac_brand" placeholder="e.g. Daikin, Carrier, Midea, York, Gree…"></div>
+    <div class="f"><label>HVAC Model / Series</label><input type="text" name="hvac_model" placeholder="e.g. Daikin VRV IV, Carrier 40MBQ…"></div>
+    <div class="f"><label>Number of HVAC zones</label><input type="number" name="hvac_zones" placeholder="e.g. 8" min="1"></div>
+    <div class="f"><label>Underfloor heating?</label>
+      <select name="ufh"><option value="">Select…</option><option>Yes — hydronic</option><option>Yes — electric</option><option>No</option><option>Considering it</option></select></div>
+  </div>
+  <hr class="div">
+  <div class="lbl">KNX integration method (existing systems)</div>
+  <div class="rad-grp">
+    <label><input type="radio" name="hvac_integration" value="Modbus gateway"> Modbus gateway</label>
+    <label><input type="radio" name="hvac_integration" value="BACnet gateway"> BACnet gateway</label>
+    <label><input type="radio" name="hvac_integration" value="Native KNX interface"> Native KNX interface</label>
+    <label><input type="radio" name="hvac_integration" value="Not sure"> Not sure — advise me</label>
+  </div>
+  <hr class="div">
+  <div class="lbl">Additional climate requirements</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="climate_extra" value="Humidity / dehumidification"> Humidity / dehumidification</label>
+    <label><input type="checkbox" name="climate_extra" value="Air quality / CO₂ / PM2.5"> Air quality / CO₂ / PM2.5</label>
+    <label><input type="checkbox" name="climate_extra" value="Outdoor cooling (misters, fans)"> Outdoor cooling (misters, fans)</label>
+    <label><input type="checkbox" name="climate_extra" value="Pool heating / chilling"> Pool heating / chilling</label>
+  </div>
+</div>
+
+<!-- 6. SHADING -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">6</div><div class="sec-t">Shading & Curtains<small>Motorised Controls</small></div></div>
+  <div class="lbl">Type (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="shading" value="Motorised curtains"> Motorised curtains</label>
+    <label><input type="checkbox" name="shading" value="Roller blinds"> Roller blinds</label>
+    <label><input type="checkbox" name="shading" value="External shutters / screens"> External shutters</label>
+    <label><input type="checkbox" name="shading" value="Pergola / awnings"> Pergola / awnings</label>
+    <label><input type="checkbox" name="shading" value="Skylight blinds"> Skylight blinds</label>
+    <label><input type="checkbox" name="shading" value="No motorised shading"> None</label>
+  </div>
+  <hr class="div">
+  <div class="g2">
+    <div class="f"><label>Shading motor brand</label><input type="text" name="shading_brand" placeholder="e.g. Somfy, Dooya, Elero…"></div>
+    <div class="f"><label>SMI interface needed?</label>
+      <select name="smi"><option value="">Select…</option><option>Yes</option><option>No</option><option>Not sure — advise me</option></select></div>
+  </div>
+</div>
+
+<!-- 7. SECURITY -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">7</div><div class="sec-t">Security & Access<small>CCTV · Locks · Intercom</small></div></div>
+  <div class="lbl">Systems in scope (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="security" value="CCTV cameras"> CCTV cameras</label>
+    <label><input type="checkbox" name="security" value="Smart locks"> Smart locks</label>
+    <label><input type="checkbox" name="security" value="Door video intercom"> Door video intercom</label>
+    <label><input type="checkbox" name="security" value="Gate intercom"> Gate intercom</label>
+    <label><input type="checkbox" name="security" value="Alarm / intrusion"> Alarm / intrusion</label>
+    <label><input type="checkbox" name="security" value="Presence / motion sensors"> Presence / motion</label>
+  </div>
+  <hr class="div">
+  <div class="g2">
+    <div class="f"><label>CCTV brand</label><input type="text" name="cctv_brand" placeholder="e.g. Hikvision, Dahua, Axis…"></div>
+    <div class="f"><label>Smart lock brand</label><input type="text" name="lock_brand" placeholder="e.g. Yale, Dormakaba…"></div>
+    <div class="f"><label>Intercom brand</label><input type="text" name="intercom_brand" placeholder="e.g. 2N, DoorBird, Akuvox…"></div>
+    <div class="f"><label>Security monitoring company</label><input type="text" name="sec_company" placeholder="Name if applicable"></div>
+  </div>
+</div>
+
+<!-- 8. AUDIO -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">8</div><div class="sec-t">Audio & Entertainment</div></div>
+  <div class="lbl">In scope (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="av" value="Multi-room background audio"> Multi-room audio</label>
+    <label><input type="checkbox" name="av" value="Dedicated home cinema"> Home cinema</label>
+    <label><input type="checkbox" name="av" value="Media room / TV lounge"> Media room / TV</label>
+    <label><input type="checkbox" name="av" value="Outdoor audio"> Outdoor audio</label>
+    <label><input type="checkbox" name="av" value="Not in scope"> Not in scope</label>
+  </div>
+  <hr class="div">
+  <div class="g2">
+    <div class="f"><label>Audio brand preference</label><input type="text" name="audio_brand" placeholder="e.g. Sonos, Bose, B&O, in-ceiling only…"></div>
+    <div class="f"><label>Number of audio zones</label><input type="number" name="audio_zones" placeholder="e.g. 6" min="1"></div>
+  </div>
+</div>
+
+<!-- 9. NETWORKING -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">9</div><div class="sec-t">Networking<small>WiFi · Wired · Infrastructure</small></div></div>
+  <div class="lbl">Requirements (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="network" value="Full WiFi coverage — all rooms + outdoor"> Full WiFi — all rooms + outdoor</label>
+    <label><input type="checkbox" name="network" value="Wired backbone for AV / server"> Wired backbone</label>
+    <label><input type="checkbox" name="network" value="Guest network"> Guest network</label>
+    <label><input type="checkbox" name="network" value="Dedicated server / equipment room"> Server room</label>
+    <label><input type="checkbox" name="network" value="Dedicated CCTV network"> Dedicated CCTV network</label>
+  </div>
+  <hr class="div">
+  <div class="g2">
+    <div class="f"><label>Network brand preference</label><input type="text" name="net_brand" placeholder="e.g. Ubiquiti UniFi, Cisco Meraki, Aruba…"></div>
+    <div class="f"><label>Internet provider (ISP)</label><input type="text" name="isp" placeholder="e.g. Etisalat / du"></div>
+  </div>
+</div>
+
+<!-- 10. ROOM BY ROOM -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">10</div><div class="sec-t">Room-by-Room Overview<small>Fill what you know — leave the rest blank</small></div></div>
+  <div style="overflow-x:auto">
+  <table class="rtbl">
+    <thead>
+      <tr>
+        <th style="min-width:120px">Room / Area</th>
+        <th style="min-width:110px">Lighting</th>
+        <th>HVAC?</th>
+        <th style="min-width:100px">Shading</th>
+        <th>Audio?</th>
+        <th>CCTV?</th>
+        <th style="min-width:120px">Notes</th>
+      </tr>
+    </thead>
+    <tbody id="rtbody"></tbody>
+  </table>
+  </div>
+  <p style="font-size:11px;color:var(--ink);margin-top:8px">
+    <a href="#" onclick="addRoom();return false" style="color:var(--gold)">+ Add room</a>
+  </p>
+</div>
+
+<!-- 11. FINISHES -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">11</div><div class="sec-t">Keypad Style & Finishes</div></div>
+  <div class="lbl">Preferred finish (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="finish" value="Brass / Antique Brass"> Brass / Antique Brass</label>
+    <label><input type="checkbox" name="finish" value="Satin Nickel / Chrome"> Satin Nickel / Chrome</label>
+    <label><input type="checkbox" name="finish" value="Matte Black"> Matte Black</label>
+    <label><input type="checkbox" name="finish" value="Glass — White"> Glass — White</label>
+    <label><input type="checkbox" name="finish" value="Glass — Black"> Glass — Black</label>
+    <label><input type="checkbox" name="finish" value="Match interior designer spec"> Match interior designer spec</label>
+    <label><input type="checkbox" name="finish" value="Advise me"> Advise me</label>
+  </div>
+  <hr class="div">
+  <div class="lbl">Brand interest (if any)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="brand_pref" value="Gira"> Gira</label>
+    <label><input type="checkbox" name="brand_pref" value="Jung"> Jung</label>
+    <label><input type="checkbox" name="brand_pref" value="Basalte"> Basalte</label>
+    <label><input type="checkbox" name="brand_pref" value="Tense"> Tense</label>
+    <label><input type="checkbox" name="brand_pref" value="Vimar"> Vimar</label>
+    <label><input type="checkbox" name="brand_pref" value="Lutron"> Lutron</label>
+    <label><input type="checkbox" name="brand_pref" value="No preference — advise me"> No preference — advise me</label>
+  </div>
+</div>
+
+<!-- 12. SPECIALTY -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">12</div><div class="sec-t">Specialty Systems</div></div>
+  <div class="lbl">In scope (tick all that apply)</div>
+  <div class="chk-grp">
+    <label><input type="checkbox" name="specialty" value="Pool / spa automation"> Pool / spa</label>
+    <label><input type="checkbox" name="specialty" value="Garden irrigation"> Irrigation</label>
+    <label><input type="checkbox" name="specialty" value="EV charging"> EV charging</label>
+    <label><input type="checkbox" name="specialty" value="Solar / battery"> Solar / battery</label>
+    <label><input type="checkbox" name="specialty" value="Gate / garage automation"> Gate / garage</label>
+    <label><input type="checkbox" name="specialty" value="Elevator integration"> Elevator</label>
+    <label><input type="checkbox" name="specialty" value="Wine cellar climate"> Wine cellar</label>
+    <label><input type="checkbox" name="specialty" value="Sauna / steam room"> Sauna / steam</label>
+    <label><input type="checkbox" name="specialty" value="Energy monitoring"> Energy monitoring</label>
+  </div>
+</div>
+
+<!-- 13. BUDGET -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">13</div><div class="sec-t">Investment Range<small>Optional — Helps Us Scope Accurately</small></div></div>
+  <div class="rad-grp">
+    <label><input type="radio" name="budget" value="Under AED 100,000"> Under AED 100,000</label>
+    <label><input type="radio" name="budget" value="AED 100,000 – 250,000"> AED 100,000 – 250,000</label>
+    <label><input type="radio" name="budget" value="AED 250,000 – 500,000"> AED 250,000 – 500,000</label>
+    <label><input type="radio" name="budget" value="AED 500,000+"> AED 500,000+</label>
+    <label><input type="radio" name="budget" value="Open — advise me"> Open — advise me</label>
+    <label><input type="radio" name="budget" value="Prefer not to say"> Prefer not to say</label>
+  </div>
+</div>
+
+<!-- 14. NOTES -->
+<div class="sec">
+  <div class="sec-hdr"><div class="sec-n">14</div><div class="sec-t">Anything Else?</div></div>
+  <div class="f"><label>Priorities, concerns, or specific requests</label>
+    <textarea name="priorities" rows="3" placeholder="e.g. Must be simple for my family · Cinema room is the priority · Future-proofing over cost…"></textarea></div>
+  <hr class="div">
+  <div class="f"><label>How did you hear about Sophisticave?</label>
+    <select name="referral"><option value="">Select…</option><option>Friend / colleague</option><option>Interior designer</option><option>Fit-out contractor</option><option>Developer recommendation</option><option>Online search</option><option>Social media</option><option>Existing client</option><option>Other</option></select></div>
+</div>
+
+<!-- SUBMIT -->
+<div class="sub-bar">
+  <h3>Ready?</h3>
+  <p>Click below to see your formatted answers, then send to Walid via WhatsApp or email in one tap.</p>
+  <div class="btns">
+    <button type="submit" class="btn-g">Review & Send →</button>
+  </div>
+</div>
+
+</form>
+</div>
+
+<div class="foot">
+  <span>Sophisticave Technical Services L.L.C · Dubai, UAE</span>
+  <span><a href="mailto:Sales@sophisticave.com">Sales@sophisticave.com</a> · <a href="tel:+971562867867">+971 56 286 7867</a></span>
+  <span><a href="https://sophisticave.com" target="_blank">sophisticave.com</a></span>
+</div>
+
+<script>
+/* ── ROOM TABLE ─────────────────────────────── */
+const ROOMS=['Master Bedroom','Master Bathroom','Bedroom 2','Bedroom 3',
+  'Living Room','Dining Room','Kitchen','Majlis / Reception',
+  'Study / Office','Home Cinema','Gym','Garden / Outdoor'];
+
+function addRoom(name=''){
+  const tb=document.getElementById('rtbody');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><input type="text" class="rn" value="${name}" placeholder="Room"></td>
+    <td><select class="rl">
+      <option value="">—</option>
+      <option>On/Off only</option><option>Dimming</option>
+      <option>On/Off + scenes</option><option>Dimming + scenes</option>
+    </select></td>
+    <td style="text-align:center"><input type="checkbox" class="rh"></td>
+    <td><select class="rs">
+      <option value="">—</option>
+      <option>Curtains</option><option>Blinds</option><option>Both</option><option>No</option>
+    </select></td>
+    <td style="text-align:center"><input type="checkbox" class="ra"></td>
+    <td style="text-align:center"><input type="checkbox" class="rc"></td>
+    <td><input type="text" class="rno" placeholder="Notes…"></td>
+  `;
+  tb.appendChild(tr);
+}
+ROOMS.forEach(r=>addRoom(r));
+
+/* ── COLLECT DATA ───────────────────────────── */
+function collect(){
+  const f=document.getElementById('qform');
+  const d=new FormData(f);
+  const v=k=>d.get(k)||'';
+  const multi=k=>d.getAll(k).filter(Boolean).join(', ')||'—';
+
+  // Rooms
+  const rows=document.querySelectorAll('#rtbody tr');
+  const roomLines=[];
+  rows.forEach(tr=>{
+    const n=tr.querySelector('.rn').value.trim();
+    if(!n) return;
+    const l=tr.querySelector('.rl').value||'—';
+    const h=tr.querySelector('.rh').checked?'✓':'—';
+    const s=tr.querySelector('.rs').value||'—';
+    const a=tr.querySelector('.ra').checked?'✓':'—';
+    const c=tr.querySelector('.rc').checked?'✓':'—';
+    const no=tr.querySelector('.rno').value.trim();
+    roomLines.push(`  ${n.padEnd(22)} | ${l.padEnd(16)} | HVAC ${h} | Shading: ${s.padEnd(8)} | Audio ${a} | CCTV ${c}${no?' | '+no:''}`);
+  });
+
+  return `SOPHISTICAVE — KNX SMART HOME BRIEF
+Submitted: ${new Date().toLocaleString('en-GB',{timeZone:'Asia/Dubai'})}
+${'─'.repeat(56)}
+
+CONTACT
+  Name:       ${v('name')||'—'}
+  Phone:      ${v('phone')||'—'}
+  Email:      ${v('email')||'—'}
+  Project:    ${v('project')||'—'}
+
+PROJECT
+  Type:       ${v('prop_type')||'—'}
+  Stage:      ${v('stage')||'—'}
+  BUA:        ${v('bua')||'—'}   Floors: ${v('floors')||'—'}
+  Completion: ${v('completion')||'—'}
+  Contractor: ${v('contractor')||'—'}
+  Rooms:      ${v('room_list')||'—'}
+
+LIFESTYLE
+  Occupants:  ${v('occupants')||'—'}
+  Travel:     ${v('travel')||'—'}
+  Remote:     ${v('remote')||'—'}
+  Control:    ${multi('ctrl')}
+  Privacy:    ${v('privacy')||'—'}
+  Notes:      ${v('lifestyle_notes')||'—'}
+
+LIGHTING
+  Design:     ${v('light_design')||'—'}
+  Fixtures:   ${v('fixture')||'—'}
+  Dimming:    ${v('dimming_req')||'—'}
+  Dim type:   ${multi('dim_type')}
+  Scenes:     ${multi('scenes')}
+  Outdoor:    ${multi('outdoor_light')}
+
+HVAC & CLIMATE
+  Status:     ${v('hvac_status')||'—'}
+  Type:       ${v('hvac_type')||'—'}
+  Brand:      ${v('hvac_brand')||'—'}
+  Model:      ${v('hvac_model')||'—'}
+  Zones:      ${v('hvac_zones')||'—'}   UFH: ${v('ufh')||'—'}
+  Integration:${v('hvac_integration')||'—'}
+  Extras:     ${multi('climate_extra')}
+
+SHADING
+  Type:       ${multi('shading')}
+  Brand:      ${v('shading_brand')||'—'}   SMI: ${v('smi')||'—'}
+
+SECURITY
+  Systems:    ${multi('security')}
+  CCTV:       ${v('cctv_brand')||'—'}
+  Locks:      ${v('lock_brand')||'—'}
+  Intercom:   ${v('intercom_brand')||'—'}
+  Company:    ${v('sec_company')||'—'}
+
+AUDIO & AV
+  Scope:      ${multi('av')}
+  Brand:      ${v('audio_brand')||'—'}   Zones: ${v('audio_zones')||'—'}
+
+NETWORKING
+  Requirements: ${multi('network')}
+  Brand:      ${v('net_brand')||'—'}   ISP: ${v('isp')||'—'}
+
+ROOM-BY-ROOM
+  ${'Room'.padEnd(22)} | Lighting         | HVAC  | Shading   | Audio | CCTV
+  ${'─'.repeat(80)}
+${roomLines.join('\n')||'  —'}
+
+FINISHES & BRANDS
+  Finish:     ${multi('finish')}
+  Brands:     ${multi('brand_pref')}
+
+SPECIALTY
+  ${multi('specialty')||'—'}
+
+INVESTMENT
+  Budget:     ${v('budget')||'—'}
+
+NOTES
+  ${v('priorities')||'—'}
+  Referral:   ${v('referral')||'—'}
+
+${'─'.repeat(56)}
+Sophisticave · Sales@sophisticave.com · +971 56 286 7867`;
+}
+
+/* ── SUBMIT ─────────────────────────────────── */
+let _summary='';
+
+function handleSubmit(e){
+  e.preventDefault();
+  const name=document.querySelector('[name=name]').value.trim();
+  if(!name){ alert('Please enter your name to continue.'); return; }
+  _summary=collect();
+  document.getElementById('ans-box').value=_summary;
+  const s=document.getElementById('ans-screen');
+  s.classList.add('show');
+  s.scrollTop=0;
+}
+
+function goBack(){
+  document.getElementById('ans-screen').classList.remove('show');
+  window.scrollTo(0,0);
+}
+
+/* ── ACTIONS ────────────────────────────────── */
+function copyAns(){
+  const box=document.getElementById('ans-box');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(_summary).then(toast).catch(()=>fallback(box));
+  } else { fallback(box); }
+}
+
+function fallback(el){
+  el.select();
+  try{ document.execCommand('copy'); toast(); }
+  catch(e){ alert('Please press Ctrl+A then Ctrl+C to copy your answers.'); }
+}
+
+function toast(){
+  const t=document.getElementById('toast');
+  t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),3200);
+}
+
+function sendWhatsApp(){
+  // Short intro message — client pastes their answers after
+  const name=document.querySelector('[name=name]').value.trim()||'Client';
+  const project=document.querySelector('[name=project]').value.trim()||'new project';
+  const msg=encodeURIComponent(`Hi Walid — I've completed the Sophisticave KNX questionnaire.\n\nName: ${name}\nProject: ${project}\n\n[Paste your copied answers here]`);
+  window.open(`https://wa.me/971562867867?text=${msg}`,'_blank');
+}
+
+function sendEmail(){
+  const name=document.querySelector('[name=name]').value.trim()||'Client';
+  const project=document.querySelector('[name=project]').value.trim()||'New Project';
+  const subj=encodeURIComponent(`KNX Smart Home Brief — ${name} — ${project}`);
+  const body=encodeURIComponent(`Hi Walid,\n\nPlease find my completed Sophisticave KNX questionnaire answers below.\n\n[Paste your copied answers here]\n\nBest regards,\n${name}`);
+  window.location.href=`mailto:Sales@sophisticave.com?subject=${subj}&body=${body}`;
+}
+</script>
+</body>
+</html>
